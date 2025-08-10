@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>De Carlos para Karina — Reto Mágico</title>
+<title>De Cucu Carlos para Cucu Karina — Apuesta </title>
 <style>
 :root{
   --bg:#0b0f1a;
@@ -156,8 +156,8 @@ body{
   <div class="header">
     <div class="logo">✨C</div>
     <div class="title">
-      <h1>De Carlos para su amor de su vida llamada Karina Coyolxauhqui</h1>
-      <p>Un reto mágico — Harry Potter: La piedra filosofal (versión extendida)</p>
+      <h1>De cucu Carlos para cucu que es el amor de mi vida llamada Karina Coyolxauhqui</h1>
+      <p>Cucu llamando a cucu para un reto mágico — Harry Potter: La piedra filosofal</p>
     </div>
   </div>
 
@@ -167,9 +167,9 @@ body{
       <div id="start-screen" class="center-screen">
         <div class="start-card">
           <div style="font-size:18px;color:var(--accent);font-weight:700">Hola Karina ✨</div>
-          <p style="margin-top:8px;color:var(--muted)">Carlos preparó este quiz especial con preguntas difíciles — ¿lista para demostrar que eres la bruja más atenta?</p>
-          <button id="startBtn" class="start-btn" aria-label="Comenzar el reto">Comenzar el reto</button>
-          <p class="small-note">Se recomienda ver en celular con sonido activado para efectos mágicos.</p>
+          <p style="margin-top:8px;color:var(--muted)">¿lista para perder? Pero igual si pierdes ganas y si ganas ganas. Asi que tranqui amor</p>
+          <button id="startBtn" class="start-btn" aria-label="Comenzar el reto">Comenzar el reto muy cucusiento</button>
+          <p class="small-note">Ponle sonido corazon listo? vamos a empezar coyeye coyeye cucu coyeye coyeye ya estas coyendo cucu apurate</p>
         </div>
       </div>
 
@@ -202,7 +202,7 @@ body{
 
     <aside class="sidebar">
       <div class="small">Instrucciones</div>
-      <div class="small" style="margin-bottom:12px">Toca la opción que creas correcta. Al final habrá una sorpresita especial.</div>
+      <div class="small" style="margin-bottom:12px">Toca la opción que creas correcta cucu okay?.</div>
 
       <div class="small">Progreso</div>
       <div id="sideProgress" style="margin-bottom:12px">
@@ -210,17 +210,17 @@ body{
       </div>
 
       <div class="small">Pistas</div>
-      <div style="font-size:14px;color:var(--muted)">Si necesitas una pista, presiona el ícono de varita (disponible en la versión completa).</div>
+      <div style="font-size:14px;color:var(--muted)">Si necesitas una pista amor, presiona el ícono de varita</div>
 
       <div class="final-message" id="finalMessageBox">
-        <h3 style="margin-top:0;color:var(--accent)">Mensaje especial</h3>
+        <h3 style="margin-top:0;color:var(--accent)">TE AMO CUCU, pero mucho cucu no sabes cuanto</h3>
         <p id="specialText"></p>
       </div>
     </aside>
   </div>
 
   <div class="footer">
-    Hecho con cariño por Carlos — abre esto con Karina 💛
+    Hecho con cariño por cucu Carlos — abre esto mi cucu hermosa - Coyeye coyeye 💛
   </div>
 </div>
 
@@ -230,7 +230,7 @@ body{
 /* Questions set (10) - opción múltiple complicadas */
 const questions = [
   {
-    q: "En la versión extendida, ¿qué está leyendo Vernon Dursley en la mesa del desayuno antes de irse al trabajo?",
+    q: "¿Qué está leyendo Vernon Dursley en la mesa del desayuno antes de irse al trabajo?",
     opts: ["El Daily Mail","The Daily Prophet","El Evening Standard","El Sunday Telegraph"],
     a: 0,
     note: "Vernon lee un periódico muggle, no mágico."
@@ -248,7 +248,7 @@ const questions = [
     note: "El paraguas rosa es visible cuando llega."
   },
   {
-    q: "En la escena extendida de la lección de Encantamientos, ¿quién intenta levitar su pluma antes que Hermione?",
+    q: "¿Quién intenta levitar su pluma antes que Hermione?",
     opts: ["Dean Thomas","Seamus Finnigan","Neville Longbottom","Lavender Brown"],
     a: 1,
     note: "Seamus provoca un pequeño accidente con su intento."
@@ -266,7 +266,7 @@ const questions = [
     note: "Nick es el fantasma de Gryffindor."
   },
   {
-    q: "En la versión extendida, ¿qué instrumento musical toca Fluffy para dormirlo?",
+    q: "¿Qué instrumento musical toca Fluffy para dormirlo?",
     opts: ["Flauta","Arpa","Piano","Violín"],
     a: 1,
     note: "El arpista (o el arpa) aparece en escena."
@@ -380,9 +380,9 @@ function showResults(){
   resultDetails.innerHTML = details;
   // show special message if score high
   if(correct >= 7){
-    specialText.innerHTML = `<strong>Karina, mi amor:</strong><br>Tu magia es poderosa. Ganaste el reto con ${correct}/${questions.length}! Te mereces todo mi cariño y más. — Carlos 💛`;
+    specialText.innerHTML = `<strong>Karina, mi amor:</strong><br>Tu magia es poderosa eres divina amor divina y muy inteligente. ${correct}/${questions.length}! Te mereces todo mi amor y más. — Carlos 💛`;
   } else {
-    specialText.innerHTML = `<strong>Karina:</strong><br>Lo importante es que lo pasaste conmigo. Te amo y siempre serás mi bruja favorita. — Carlos 💛`;
+    specialText.innerHTML = `<strong>Karina:</strong><br>Lo importante es que lo pasaste conmigo. Te amo y siempre serás mi niña hermosa, un poco distraida pero hermosa. — Carlos 💛`;
   }
   finalMessageBox.style.display='block';
   // launch fireworks
@@ -426,9 +426,9 @@ function speakFinal(correct){
   utter.lang='es-ES';
   utter.rate=0.95;
   if(correct>=7){
-    utter.text = `Felicidades Karina. Has demostrado tu magia con ${correct} respuestas correctas. Carlos te manda un abrazo enorme.`;
+    utter.text = `Felicidades mi amor. Has demostrado tu magia con ${correct} respuestas correctas. Te mandao un abrazo enorme y un chupibeso.`;
   } else {
-    utter.text = `Excelente intento Karina. Carlos te manda un beso y dice que eres su bruja favorita.`;
+    utter.text = `Excelente intento mi amor. te manda un beso, eres mi niña hermosa muy distraida.`;
   }
   window.speechSynthesis.cancel();
   window.speechSynthesis.speak(utter);
