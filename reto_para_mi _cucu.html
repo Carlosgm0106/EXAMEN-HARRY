@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Examen Star Wars — Para mi cucu hermosa</title>
+<style>
+:root{
+  --bg:#000000;
+  --card:#0d0d0d;
+  --accent:#ffe81f;
+  --muted:#c0c0c0;
+  --glass: rgba(255,255,255,0.05);
+}
+html,body{margin:0;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Arial',sans-serif;background:radial-gradient(ellipse at center, #000 0%, #050505 100%);color:#fff;}
+.container{background:var(--card);border-radius:14px;border:1px solid var(--accent);box-shadow:0 0 20px rgba(255,232,31,0.4);max-width:900px;width:100%;overflow:hidden;}
+.header{text-align:center;padding:20px;border-bottom:1px solid var(--accent);}
+.header h1{color:var(--accent);text-shadow:0 0 10px var(--accent);}
+.header p{color:var(--muted);}
+.quiz{padding:20px;}
+.q-header h2{color:var(--accent);}
+.progress{color:var(--muted);}
+.question{margin-top:12px;font-size:18px;}
+.options{margin-top:12px;display:grid;gap:10px}
+.option{background:var(--glass);padding:10px 12px;border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,0.1);display:flex;gap:12px;align-items:center;}
+.option:hover{background:rgba(255,232,31,0.1);transform:translateY(-2px);}
+.option .letter{width:34px;height:34px;border-radius:8px;display:inline-grid;place-items:center;background:rgba(255,232,31,0.15);color:var(--accent);font-weight:700;}
+.option.selected{border-color:var(--accent);}
+.nav{display:flex;gap:12px;justify-content:flex-end;margin-top:16px}
+.btn{background:transparent;border:1px solid var(--accent);padding:10px 14px;border-radius:10px;color:var(--accent);cursor:pointer;font-weight:600;}
+.btn.primary{background:var(--accent);color:#000;}
+.footer{text-align:center;padding:12px;font-size:13px;color:var(--muted);}
+</style>
+</head>
+<body>
+<audio id="bgMusic" src="https://ia800905.us.archive.org/28/items/StarWarsThemeSongByJohnWilliams/Star%20Wars%20Theme%20Song%20By%20John%20Williams.mp3" autoplay loop></audio>
+<div class="container">
+  <div class="header">
+    <h1>Examen de cucus galacticos </h1>
+    <p>Para mi princesa hermosa — que la Fuerza y mi amor te acompañen 💛</p>
+  </div>
+  <div class="quiz" id="quiz-area">
+    <div id="start-screen" style="text-align:center;">
+      <p>Mi amor, te toca responder este examen ahora se que ahora si sacaras tu cucinteligencia </p>
+      <button id="startBtn" class="btn primary">Comenzar</button>
+    </div>
+    <div id="quiz-screen" style="display:none">
+      <div class="q-header">
+        <h2 id="q-title">Pregunta</h2>
+        <div class="progress" id="progress">1 / 10</div>
+      </div>
+      <div class="question" id="question-text"></div>
+      <div class="options" id="options"></div>
+      <div class="nav">
+        <button class="btn" id="prevBtn">Atrás</button>
+        <button class="btn primary" id="nextBtn">Siguiente</button>
+      </div>
+    </div>
+    <div id="result-screen" style="display:none;text-align:center;">
+      <h2 style="color:var(--accent)">¡Resultado!</h2>
+      <p id="scoreText"></p>
+      <div id="resultDetails" style="text-align:left;margin-top:12px;"></div>
+      <p id="finalMessage" style="color:var(--accent);font-weight:bold"></p>
+      <button id="retryBtn" class="btn">Volver a intentarlo</button>
+    </div>
+  </div>
+  <div class="footer">Con amor eterno para ti, amorcito 💖</div>
+</div>
+<script>
+const questions = [
+  {q:"¿Quién es el maestro Jedi de Obi-Wan Kenobi en esta película?",opts:["Yoda","Qui-Gon Jinn","Mace Windu","Anakin Skywalker"],a:1},
+  {q:"¿Qué joven personaje será más tarde Darth Vader?",opts:["Luke Skywalker","Anakin Skywalker","Boba Fett","Han Solo"],a:1},
+  {q:"¿En qué planeta vive Anakin cuando lo conocen?",opts:["Tatooine","Naboo","Coruscant","Alderaan"],a:0},
+  {q:"¿Qué raza es Jar Jar Binks?",opts:["Wookiee","Gungan","Twi'lek","Rodiano"],a:1},
+  {q:"¿Cómo se llama la reina de Naboo?",opts:["Leia Organa","Padmé Amidala","Shmi Skywalker","Mon Mothma"],a:1},
+  {q:"¿Quién mata a Qui-Gon Jinn?",opts:["Darth Maul","Conde Dooku","General Grievous","Darth Vader"],a:0},
+  {q:"¿Qué color es el sable de luz de Darth Maul?",opts:["Rojo","Verde","Azul","Morado"],a:0},
+  {q:"¿Qué tipo de carrera gana Anakin?",opts:["Carrera de vainas","Carrera de speeders","Carrera de droides","Carrera de swoops"],a:0},
+  {q:"¿Quién es el maestro Sith en las sombras?",opts:["Darth Sidious","Darth Plagueis","Darth Tyranus","Darth Revan"],a:0},
+  {q:"¿Qué planeta es invadido al inicio de la película?",opts:["Naboo","Tatooine","Kamino","Mustafar"],a:0}
+];
+let state = { idx:0, answers:Array(questions.length).fill(null) };
+const startBtn=document.getElementById('startBtn');
+const quizScreen=document.getElementById('quiz-screen');
+const startScreen=document.getElementById('start-screen');
+const resultScreen=document.getElementById('result-screen');
+const qTitle=document.getElementById('q-title');
+const questionText=document.getElementById('question-text');
+const optionsDiv=document.getElementById('options');
+const progress=document.getElementById('progress');
+const scoreText=document.getElementById('scoreText');
+const resultDetails=document.getElementById('resultDetails');
+const nextBtn=document.getElementById('nextBtn');
+const prevBtn=document.getElementById('prevBtn');
+const finalMessage=document.getElementById('finalMessage');
+startBtn.addEventListener('click',()=>{startScreen.style.display='none';quizScreen.style.display='block';renderQuestion();speakText('Comienza la apuesta, mi amor, que la Fuerza y mi corazón te acompañen');});
+function renderQuestion(){
+  const i=state.idx;
+  qTitle.textContent=`Pregunta ${i+1}`;
+  progress.textContent=`${i+1} / ${questions.length}`;
+  questionText.textContent=questions[i].q;
+  optionsDiv.innerHTML='';
+  questions[i].opts.forEach((opt,j)=>{
+    const div=document.createElement('div');
+    div.className='option';
+    div.innerHTML=`<div class="letter">${String.fromCharCode(65+j)}</div><div>${opt}</div>`;
+    if(state.answers[i]===j) div.classList.add('selected');
+    div.addEventListener('click',()=>selectOption(i,j,div));
+    optionsDiv.appendChild(div);
+  });
+  prevBtn.disabled=i===0;
+  nextBtn.textContent=i===questions.length-1?'Enviar':'Siguiente';
+}
+function selectOption(qIdx,optIdx,el){
+  state.answers[qIdx]=optIdx;
+  Array.from(optionsDiv.children).forEach(ch=>ch.classList.remove('selected'));
+  el.classList.add('selected');
+}
+nextBtn.addEventListener('click',()=>{if(state.idx<questions.length-1){state.idx++;renderQuestion();}else{showResults();}});
+prevBtn.addEventListener('click',()=>{if(state.idx>0){state.idx--;renderQuestion();}});
+function showResults(){
+  quizScreen.style.display='none';resultScreen.style.display='block';
+  let correct=0;let details='';
+  questions.forEach((q,i)=>{
+    const ans=state.answers[i];
+    const isCorrect=ans===q.a;
+    if(isCorrect) correct++;
+    details+=`<p><strong>${i+1}. ${q.q}</strong><br>Tu respuesta: ${ans!=null?q.opts[ans]:'No respondida'}<br>Correcta: ${q.opts[q.a]} - ${isCorrect?'✅':'❌'}</p>`;
+  });
+  scoreText.textContent=`${correct} / ${questions.length} correctas`;
+  finalMessage.textContent = correct>=7 ? "Eres mi princesa amorcito. ¡La Fuerza y mi amor están contigo siempre!" : "No importa el resultado, siempre serás la reina de mi galaxia, cucu.";
+  speakText(finalMessage.textContent);
+}
+function speakText(text){
+  if('speechSynthesis' in window){
+    const utter=new SpeechSynthesisUtterance(text);
+    utter.lang='es-ES'; utter.rate=0.9;
+    speechSynthesis.speak(utter);
+  }
+}
+document.getElementById('retryBtn').addEventListener('click',()=>{state.idx=0;state.answers=Array(questions.length).fill(null);resultScreen.style.display='none';startScreen.style.display='block';});
+</script>
+</body>
+</html>
